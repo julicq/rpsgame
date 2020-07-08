@@ -2,11 +2,7 @@ import random
 
 def main():
     show_header()
-
-    player = 'You'
-    ai = 'Computer'
-
-    play_game(player, ai)
+    play_game("You", "Computer")
 
 def show_header():
     print("------------------------------------")
@@ -14,20 +10,44 @@ def show_header():
     print("------------------------------------")
 
 def play_game(player_1, player_2):
-
+    rounds = 3
+    wins_p1 = 0
+    wins_p2 = 0
     rolls = ['rock', 'paper', 'scissors']
 
-    roll1 = get_roll(player_1, rolls)
-    roll2 = random.choice(rolls)
+    while wins_p1 < rounds and wins_p2 < rounds:
+        roll1 = get_roll(player_1, rolls)
+        roll2 = random.choice(rolls)
 
-    if not roll1:
-        print("Can't play that, exiting")
-        return
+        if not roll1:
+            print("Try again?")
+            continue
 
-    print(f"{player_1} roll {roll1}")
-    print(f"{player_2} rolls {roll2}")
+        print(f"{player_1} roll {roll1}")
+        print(f"{player_2} rolls {roll2}")
 
-    # Test for a winner
+        winner = check_for_winning_throw(player_1, player_2, roll1, roll2)
+
+        if winner is None:
+            print("This round was a tie!")
+        else:
+            print(f"{winner} takes the round!")
+            if winner == player_1:
+                wins_p1 += 1
+            elif winner == player_2:
+                wins_p2 += 1
+
+        print(f"Score is: {player_1}: {wins_p1} and {player_2}: {wins_p2}.")
+        print()
+
+    if wins_p1 >= rounds:
+        overall_winner = player_1
+    else:
+        overall_winner = player_2
+    print(f"{overall_winner} wins the game!")
+
+
+def check_for_winning_throw(player_1, player_2, roll1, roll2):
     # Rock
     #   Rock -> tie
     #   Paper -> lose
@@ -40,9 +60,7 @@ def play_game(player_1, player_2):
     #   Rock -> lose
     #   Paper -> win
     #   Scissors -> tie
-
     winner = None
-
     if roll1 == roll2:
         print("The play was tied!")
     elif roll1 == 'rock':
@@ -60,12 +78,8 @@ def play_game(player_1, player_2):
             winner = player_2
         elif roll2 == 'paper':
             winner = player_1
+    return winner
 
-    print('The game is over!')
-    if winner is None:
-        print("It was a tie!")
-    else:
-        print(f"{winner} takes the game!")
 
 def get_roll(player_name, rolls):
     roll = input(f"{player_name}, what is your roll? [rock, paper, scissors]: ")
