@@ -1,3 +1,3 @@
 # rpsgame
 
-Creating Rock-Paper-Scisors game using Python
+Creating Rock-Paper-Scissors game using Python
